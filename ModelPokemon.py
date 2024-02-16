@@ -3,7 +3,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.tree import DecisionTreeClassifier, export_text
 
 def load_data():
-    # Carregar dados
+    # Carregar dados da base
     url = "https://gist.githubusercontent.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
     data = pd.read_csv(url)
 
@@ -38,10 +38,10 @@ def main():
     print("\nÁrvore de decisão gerada:")
     print(tree_rules)
 
+    # Coletar atributos do usuário
     print("\nBem-vindo à aplicação de classificação de tipo de Pokémon!")
     print("Insira os atributos do Pokémon para classificação:")
 
-    # Coletar atributos do usuário
     features_input = {}
     features_input['Total'] = float(input("Total: "))
     features_input['HP'] = float(input("HP: "))
@@ -53,7 +53,7 @@ def main():
     features_input['Generation'] = float(input("Geração: "))
     features_input['Legendary'] = input("Lendário (True/False): ").lower() == 'true'
 
-    # Classificar o Pokémon
+    # Classificar qual o tipo do Pokémon
     predicted_type = classify_pokemon(model, features_input)
     print("O tipo do Pokémon é:", predicted_type)
 
