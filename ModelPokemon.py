@@ -24,14 +24,14 @@ def main():
     features, labels = load_data()
 
     # Criar modelo de Árvore de Decisão
-    model = DecisionTreeClassifier(min_samples_split=20, max_depth=5)  # Ajuste dos parâmetros
+    model = DecisionTreeClassifier(min_samples_split=25, max_depth=9)  # Ajuste dos parâmetros
+
+    # Treinar o modelo final
+    model.fit(features, labels)
 
     # Avaliar o modelo usando validação cruzada de 10-folds
     scores = cross_val_score(model, features, labels, cv=10)
     print("Taxa de acerto média: {:.2f}%".format(scores.mean() * 100))
-
-    # Treinar o modelo final
-    model.fit(features, labels)
 
     # Exibir a árvore de decisão gerada
     tree_rules = export_text(model, feature_names=features.columns.tolist())
