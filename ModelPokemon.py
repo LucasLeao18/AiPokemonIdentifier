@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.model_selection import cross_val_score
-from sklearn.tree import DecisionTreeClassifier, export_text
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+import graphviz
+from IPython.display import Image, display
+import io
 
 def load_data():
     # Carregar dados da base
@@ -19,6 +22,23 @@ def classify_pokemon(model, features):
     prediction = model.predict([features_selected])[0]
     return prediction
 
+def plot_decision_tree(model, features):
+    # Exportar a árvore de decisão para DOT format
+    dot_data = export_graphviz(model,
+                               out_file=None,
+                               feature_names=features.columns,
+                               class_names=model.classes_,
+                               filled=True, rounded=True,
+                               special_characters=True)
+
+    # Criar um gráfico a partir do DOT data
+    graph = graphviz.Source(dot_data)
+
+    # Renderizar a árvore no formato PNG
+    image = Image(graph.render(format='png'))
+
+    return image
+
 def main():
     # Carregar dados
     features, labels = load_data()
@@ -34,9 +54,8 @@ def main():
     print("Taxa de acerto média: {:.2f}%".format(scores.mean() * 100))
 
     # Exibir a árvore de decisão gerada
-    tree_rules = export_text(model, feature_names=features.columns.tolist())
-    print("\nÁrvore de decisão gerada:")
-    print(tree_rules)
+    image = plot_decision_tree(model, features)
+    display(image)
 
     # Coletar atributos do usuário
     print("\nBem-vindo à aplicação de classificação de tipo de Pokémon!")
